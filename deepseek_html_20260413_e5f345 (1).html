@@ -1,0 +1,1396 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>Speech Battle — Мастерская аргументов</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f5e9 0%, #e0f2fe 100%);
+            min-height: 100vh;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.05); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #10b981, #06b6d4); border-radius: 10px; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        .header {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            border-radius: 30px;
+            padding: 20px 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(16,185,129,0.2);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo i {
+            font-size: 2.5rem;
+            color: white;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            color: white;
+        }
+
+        .header-actions { display: flex; gap: 12px; }
+
+        .icon-btn {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .icon-btn:hover { background: rgba(255,255,255,0.3); transform: scale(1.05); }
+
+        .btn-outline {
+            padding: 10px 20px;
+            border-radius: 25px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .btn-outline:hover { background: white; color: #10b981; }
+
+        .user-bar {
+            background: rgba(255,255,255,0.2);
+            border-radius: 60px;
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #10b981;
+        }
+
+        .user-info { flex: 1; }
+        .user-name { font-weight: bold; font-size: 1.1rem; color: white; }
+        .user-level { font-size: 0.85rem; opacity: 0.9; color: white; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+        .rank-badge { background: rgba(255,215,0,0.3); padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; color: #ffd700; }
+        .progress-bar { width: 150px; height: 6px; background: rgba(255,255,255,0.3); border-radius: 3px; overflow: hidden; }
+        .progress-fill { height: 100%; background: white; width: 0%; transition: width 0.3s; }
+        .tagline { font-size: 0.9rem; opacity: 0.9; margin-top: 10px; text-align: center; color: white; }
+
+        .nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 30px;
+        }
+
+        .nav-btn {
+            padding: 12px 28px;
+            border: none;
+            border-radius: 40px;
+            background: white;
+            color: #10b981;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+
+        .nav-btn.active {
+            background: linear-gradient(135deg, #10b981, #06b6d4);
+            color: white;
+        }
+
+        .nav-btn:hover:not(.active) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16,185,129,0.2);
+        }
+
+        .section { display: none; animation: fadeIn 0.4s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 25px;
+            color: #059669;
+        }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 25px; }
+        
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(16,185,129,0.15); }
+        .card-icon { font-size: 2.5rem; margin-bottom: 15px; }
+        .card h3 { margin-bottom: 10px; color: #059669; }
+
+        .rhetoric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .rhetoric-card {
+            background: white;
+            border-radius: 16px;
+            padding: 20px;
+            border-left: 4px solid #10b981;
+            transition: all 0.3s;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .rhetoric-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(16,185,129,0.1);
+        }
+        .rhetoric-card h4 {
+            color: #059669;
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+        }
+        .rhetoric-card p {
+            color: #475569;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+        .rhetoric-card small {
+            color: #06b6d4;
+            display: block;
+            margin-top: 10px;
+            font-size: 0.85rem;
+        }
+
+        .debate-area {
+            background: white;
+            border-radius: 25px;
+            padding: 25px;
+            margin-top: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+        .debate-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #e2e8f0; }
+        .debate-header h2 { color: #059669; word-break: break-word; }
+        .debate-stats { background: #ecfdf5; padding: 12px; border-radius: 12px; text-align: center; font-weight: bold; margin-bottom: 20px; color: #059669; }
+        .messages { max-height: 400px; overflow-y: auto; padding: 15px; background: #f8fafc; border-radius: 15px; margin-bottom: 20px; }
+        .message { display: flex; margin-bottom: 15px; animation: slideIn 0.3s ease; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
+        .message.ai .avatar { background: linear-gradient(135deg, #06b6d4, #3b82f6); }
+        .message.user { flex-direction: row-reverse; }
+        .message.user .avatar { background: linear-gradient(135deg, #10b981, #059669); margin-left: 12px; margin-right: 0; }
+        .avatar { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; margin-right: 12px; flex-shrink: 0; }
+        .message-content { background: #f1f5f9; padding: 12px 18px; border-radius: 18px; max-width: 70%; color: #1e293b; }
+
+        .btn-group { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 20px; }
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .btn-primary { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .btn-primary:hover { transform: scale(1.02); box-shadow: 0 5px 15px rgba(16,185,129,0.4); }
+        .btn-success { background: linear-gradient(135deg, #06b6d4, #0284c7); color: white; }
+        .btn-warning { background: linear-gradient(135deg, #f59e0b, #d97706); color: white; }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            border-radius: 30px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalAppear 0.3s ease;
+        }
+        @keyframes modalAppear { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; padding: 20px 25px; border-bottom: 1px solid #e2e8f0; color: #1e293b; }
+        .modal-body { padding: 25px; color: #1e293b; }
+        .modal-close { background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #94a3b8; }
+
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        .form-input:focus { outline: none; border-color: #10b981; }
+        .form-select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        .divider { text-align: center; margin: 20px 0; position: relative; color: #94a3b8; }
+        .divider::before, .divider::after { content: ""; position: absolute; top: 50%; width: 40%; height: 1px; background: #e2e8f0; }
+        .divider::before { left: 0; }
+        .divider::after { right: 0; }
+
+        .status-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 25px; }
+        .status-card {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .status-card:hover { background: #ecfdf5; }
+        .status-card.selected { border-color: #10b981; background: #ecfdf5; }
+        .status-icon { font-size: 2rem; margin-bottom: 10px; }
+        .status-card strong { color: #1e293b; }
+        .status-card div:last-child { font-size: 0.8rem; color: #64748b; }
+
+        .exercise-option {
+            background: #f8fafc;
+            padding: 12px 16px;
+            margin: 8px 0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            color: #1e293b;
+        }
+        .exercise-option:hover { background: #e2e8f0; }
+        .exercise-option.selected { background: linear-gradient(135deg, #10b981, #059669); color: white; }
+        .exercise-option.correct { background: #10b981; color: white; }
+        .exercise-option.incorrect { background: #ef4444; color: white; text-decoration: line-through; }
+
+        .notification-area {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1100;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .notification {
+            background: white;
+            border-left: 4px solid #10b981;
+            padding: 15px 20px;
+            border-radius: 12px;
+            color: #1e293b;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            animation: slideRight 0.3s ease;
+            max-width: 350px;
+        }
+        @keyframes slideRight { from { opacity: 0; transform: translateX(100px); } to { opacity: 1; transform: translateX(0); } }
+        .notification.success { border-left-color: #10b981; }
+        .notification.error { border-left-color: #ef4444; }
+        .notification.warning { border-left-color: #f59e0b; }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .stat-card { background: white; padding: 20px; border-radius: 20px; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+        .stat-value { font-size: 2.5rem; font-weight: bold; color: #10b981; }
+
+        .footer { text-align: center; padding: 30px; margin-top: 50px; color: #64748b; }
+
+        @media (max-width: 768px) {
+            .grid, .stats-grid, .status-grid, .rhetoric-grid { grid-template-columns: 1fr; }
+            .message-content { max-width: 85%; }
+            .btn-group { flex-direction: column; }
+            .btn-group .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-top">
+                <div class="logo">
+                    <i class="fas fa-comments"></i>
+                    <h1>Speech Battle</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="icon-btn" id="accountBtn"><i class="fas fa-user"></i></button>
+                </div>
+            </div>
+            <div class="user-bar" id="userBar" style="display: none;">
+                <div class="user-avatar" id="userAvatar">Г</div>
+                <div class="user-info">
+                    <div class="user-name" id="userName">Гость</div>
+                    <div class="user-level">
+                        <span>Уровень <span id="userLevel">1</span></span>
+                        <span class="rank-badge" id="userRank">Новичок</span>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="userProgress"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tagline">Мастерская аргументов — тренируй логику, побеждай в дебатах</div>
+        </div>
+
+        <div class="nav">
+            <button class="nav-btn active" data-section="topics"><i class="fas fa-comments"></i> Дебаты</button>
+            <button class="nav-btn" data-section="quiz"><i class="fas fa-question-circle"></i> Викторины</button>
+            <button class="nav-btn" data-section="training"><i class="fas fa-graduation-cap"></i> Тренировки</button>
+            <button class="nav-btn" data-section="stats"><i class="fas fa-chart-line"></i> Статистика</button>
+            <button class="nav-btn" data-section="achievements"><i class="fas fa-trophy"></i> Достижения</button>
+            <button class="nav-btn" data-section="rhetoric"><i class="fas fa-book"></i> Риторика</button>
+            <button class="nav-btn" data-section="exam"><i class="fas fa-graduation-cap"></i> Экзамен</button>
+        </div>
+
+        <div class="section active" id="topicsSection">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; flex-wrap: wrap; gap: 15px;">
+                <h2 class="section-title">Темы для дебатов</h2>
+                <button class="btn-outline" id="generateTopicBtn" style="background:#10b981; color:white; border:none;"><i class="fas fa-wand-magic"></i> Сгенерировать тему</button>
+            </div>
+            <div class="grid" id="topicsGrid"></div>
+        </div>
+
+        <div class="section" id="quizSection">
+            <h2 class="section-title">Викторины</h2>
+            <div class="grid" id="quizGrid"></div>
+        </div>
+
+        <div class="section" id="trainingSection">
+            <h2 class="section-title">Тренировки</h2>
+            <div class="grid" id="trainingGrid"></div>
+        </div>
+
+        <div class="section" id="statsSection">
+            <h2 class="section-title">Статистика</h2>
+            <div class="stats-grid" id="statsGrid"></div>
+            <button class="btn-outline" id="exportStatsBtn" style="margin-top: 20px; background:#10b981; color:white; border:none;"><i class="fas fa-download"></i> Экспорт статистики</button>
+        </div>
+
+        <div class="section" id="achievementsSection">
+            <h2 class="section-title">Достижения</h2>
+            <div class="grid" id="achievementsGrid"></div>
+        </div>
+
+        <div class="section" id="rhetoricSection">
+            <h2 class="section-title">Библиотека риторики</h2>
+            <div class="rhetoric-grid" id="rhetoricGrid"></div>
+        </div>
+
+        <div class="section" id="examSection">
+            <h2 class="section-title">Экзамен</h2>
+            <div class="card" id="startExamBtn" style="text-align: center;">
+                <div class="card-icon">🎓</div>
+                <h3>Начать экзамен</h3>
+                <p>50 вопросов · 30 минут · Проверь свои знания</p>
+            </div>
+        </div>
+
+        <div class="debate-area" id="debateArea" style="display: none;">
+            <div class="debate-header">
+                <h2 id="debateTopic">Тема</h2>
+                <button class="modal-close" id="closeDebateBtn">&times;</button>
+            </div>
+            <div class="debate-stats" id="debateStats">Счёт: Вы 0 - 0 ИИ</div>
+            <div class="messages" id="messagesContainer"></div>
+            <div class="btn-group">
+                <button class="btn btn-primary" id="counterBtn"><i class="fas fa-reply"></i> Контраргумент</button>
+                <button class="btn btn-success" id="agreeBtn"><i class="fas fa-check"></i> Согласен</button>
+                <button class="btn-outline" id="nextArgBtn"><i class="fas fa-forward"></i> Следующий</button>
+                <button class="btn-outline" id="finishDebateBtn"><i class="fas fa-flag-checkered"></i> Завершить</button>
+            </div>
+            <div id="debateTip" style="margin-top: 15px; padding: 10px; background: #ecfdf5; border-radius: 10px; font-size: 0.85rem; color: #059669; text-align: center;">
+                💡 Совет: Используй факты и логику, чтобы убедить оппонента
+            </div>
+        </div>
+    </div>
+
+    <!-- МОДАЛЬНЫЕ ОКНА -->
+    <div class="modal" id="accountModal"><div class="modal-content"><div class="modal-header"><h2><i class="fas fa-user-circle"></i> Аккаунт</h2><button class="modal-close" id="closeAccountModal">&times;</button></div><div class="modal-body"><div id="loginView"><input type="text" id="username" class="form-input" placeholder="Ваше имя"><button class="btn btn-primary" id="loginBtn" style="width:100%;"><i class="fas fa-sign-in-alt"></i> Войти / Создать</button><div class="divider">или</div><select id="usersSelect" class="form-select"><option value="">-- Выбрать аккаунт --</option></select><button class="btn-outline" id="switchUserBtn" style="width:100%;">Переключиться</button></div><div id="profileView" style="display:none; text-align:center;"><div class="user-avatar" style="width:80px; height:80px; font-size:2rem; margin:0 auto 15px; background:#10b981; color:white;" id="profileAvatar">Г</div><div class="user-name" id="profileName" style="font-size:1.3rem;"></div><div class="user-level" style="justify-content:center; margin:15px 0;">Уровень <span id="profileLevel">1</span> • <span id="profileRank">Новичок</span></div><button class="btn-outline" id="logoutBtn" style="width:100%;"><i class="fas fa-sign-out-alt"></i> Выйти</button></div></div></div></div>
+
+    <div class="modal" id="statusModal"><div class="modal-content"><div class="modal-header"><h2><i class="fas fa-graduation-cap"></i> Кто вы?</h2><button class="modal-close" id="closeStatusModal">&times;</button></div><div class="modal-body"><p style="text-align:center; margin-bottom:20px; color:#64748b;">Это поможет подобрать темы и уровень сложности</p><div class="status-grid"><div class="status-card" data-status="student"><div class="status-icon">🎒</div><div><strong>Ученик</strong></div><div>13-17 лет</div></div><div class="status-card" data-status="college"><div class="status-icon">🎓</div><div><strong>Студент</strong></div><div>18-25 лет</div></div><div class="status-card" data-status="adult"><div class="status-icon">💼</div><div><strong>Взрослый</strong></div><div>26+ лет</div></div></div><button class="btn btn-primary" id="confirmStatusBtn" style="width:100%;">Продолжить</button></div></div></div>
+
+    <div class="modal" id="trainingModal"><div class="modal-content"><div class="modal-header"><h2 id="trainingTitle">Тренировка</h2><button class="modal-close" id="closeTrainingModal">&times;</button></div><div class="modal-body"><div id="trainingQuestion" style="font-size:1.1rem; margin-bottom:20px;"></div><div id="trainingOptions"></div><div id="trainingFeedback" style="display:none;"></div><div class="btn-group" style="margin-top:20px;"><button class="btn-outline" id="trainingHintBtn"><i class="fas fa-lightbulb"></i> Подсказка</button><button class="btn btn-primary" id="trainingCheckBtn"><i class="fas fa-check"></i> Проверить</button><button class="btn btn-success" id="trainingNextBtn" style="display:none;"><i class="fas fa-forward"></i> Далее</button></div></div></div></div>
+
+    <div class="modal" id="quizModal"><div class="modal-content"><div class="modal-header"><div><span id="quizTimer">02:00</span> | <span id="quizScore">0</span> очков</div><button class="modal-close" id="closeQuizModal">&times;</button></div><div class="modal-body"><div id="quizCounter" style="margin-bottom:15px;">Вопрос 1/5</div><div id="quizQuestion" style="font-size:1.1rem; margin-bottom:20px;"></div><div id="quizOptions"></div><div id="quizFeedback" style="display:none;"></div><div class="btn-group" style="margin-top:20px;"><button class="btn-outline" id="quizSkipBtn"><i class="fas fa-forward"></i> Пропустить</button><button class="btn btn-primary" id="quizCheckBtn"><i class="fas fa-check"></i> Проверить</button><button class="btn btn-success" id="quizNextBtn" style="display:none;"><i class="fas fa-forward"></i> Далее</button></div></div></div></div>
+
+    <div class="modal" id="quizResultsModal"><div class="modal-content"><div class="modal-header"><h2>Результаты викторины</h2><button class="modal-close" id="closeQuizResultsModal">&times;</button></div><div class="modal-body"><div class="stats-grid" style="margin-bottom:20px;"><div class="stat-card"><div class="stat-value" id="quizFinalScore">0</div><div>Баллы</div></div><div class="stat-card"><div class="stat-value" id="quizCorrectCount">0/0</div><div>Правильно</div></div><div class="stat-card"><div class="stat-value" id="quizAccuracy">0%</div><div>Точность</div></div></div><button class="btn btn-primary" id="quizResultsCloseBtn" style="width:100%;">Закрыть</button></div></div></div>
+
+    <div class="modal" id="examModal"><div class="modal-content"><div class="modal-header"><div><span id="examTimer">30:00</span> | <span id="examScore">0</span> очков</div><button class="modal-close" id="closeExamModal">&times;</button></div><div class="modal-body"><div id="examCounter" style="margin-bottom:15px;">Вопрос 1/50</div><div id="examQuestion" style="font-size:1.1rem; margin-bottom:20px;"></div><div id="examOptions"></div><div class="btn-group" style="margin-top:20px;"><button class="btn-outline" id="examSkipBtn"><i class="fas fa-forward"></i> Пропустить</button><button class="btn btn-primary" id="examCheckBtn"><i class="fas fa-check"></i> Проверить</button><button class="btn btn-success" id="examNextBtn" style="display:none;"><i class="fas fa-forward"></i> Далее</button><button class="btn-warning" id="examFinishBtn"><i class="fas fa-flag-checkered"></i> Завершить</button></div></div></div></div>
+
+    <div class="modal" id="certificateModal"><div class="modal-content"><div class="modal-header"><h2>🎓 Сертификат</h2><button class="modal-close" id="closeCertificateModal">&times;</button></div><div class="modal-body" style="text-align:center;"><div style="font-size:3rem;">🏆</div><h3 id="certificateName"></h3><div class="stats-grid" style="margin-top:20px;"><div><strong>Баллы:</strong> <span id="certificateScore">0</span></div><div><strong>Точность:</strong> <span id="certificatePercent">0%</span></div><div><strong>Время:</strong> <span id="certificateTime">0:00</span></div><div><strong>Дата:</strong> <span id="certificateDate"></span></div></div><button class="btn btn-primary" id="certificateCloseBtn" style="width:100%; margin-top:20px;">Закрыть</button></div></div></div>
+
+    <div class="modal" id="alertModal"><div class="modal-content"><div class="modal-header"><h2 id="alertTitle">Уведомление</h2><button class="modal-close" id="closeAlertModal">&times;</button></div><div class="modal-body"><div style="font-size:3rem; text-align:center;" id="alertIcon">ℹ️</div><p id="alertMessage" style="text-align:center; margin:15px 0;"></p><button class="btn btn-primary" id="alertConfirmBtn" style="width:100%;">OK</button></div></div></div>
+
+    <div class="modal" id="promptModal"><div class="modal-content"><div class="modal-header"><h2 id="promptTitle">Введите ответ</h2><button class="modal-close" id="closePromptModal">&times;</button></div><div class="modal-body"><p id="promptMessage" style="margin-bottom:15px;"></p><input type="text" id="promptInput" class="form-input" placeholder="Ваш ответ..."><div class="btn-group"><button class="btn-outline" id="promptCancelBtn">Отмена</button><button class="btn btn-primary" id="promptConfirmBtn">Отправить</button></div></div></div></div>
+
+    <div class="modal" id="achievementModal"><div class="modal-content"><div class="modal-header"><h2 id="achievementModalTitle">Достижение</h2><button class="modal-close" id="closeAchievementModal">&times;</button></div><div class="modal-body" style="text-align:center;"><div style="font-size:4rem;" id="achievementModalIcon">🏆</div><h3 id="achievementModalName" style="color:#059669; margin:15px 0;"></h3><p id="achievementModalDesc"></p><p id="achievementModalProgress" style="color:#64748b; margin-top:15px;"></p><button class="btn btn-primary" id="achievementModalCloseBtn" style="width:100%; margin-top:20px;">Понятно</button></div></div></div>
+
+    <div class="notification-area" id="notificationArea"></div>
+
+    <div class="footer">
+        <p>Speech Battle — Мастерская аргументов</p>
+        <p style="margin-top:10px;">Анна Рябенко и Дмитрий Хлонь</p>
+    </div>
+
+    <script>
+        // ========== УНИКАЛЬНЫЕ ТЕМЫ ДЛЯ ДЕБАТОВ ==========
+        let topicsData = {
+            "tech-impact": { title: "🤖 Технологии: благо или проклятие?", args: ["Технологии упрощают жизнь и экономят время", "Автоматизация приводит к потере рабочих мест", "Медицинские технологии спасают миллионы жизней", "Цифровое неравенство разделяет общество"] },
+            "remote-work": { title: "💻 Удалёнка: будущее или нет?", args: ["Экономия времени на дорогу и гибкий график", "Стирание границ между работой и личной жизнью", "Доступ к мировому рынку труда без переезда", "Потеря корпоративной культуры и социализации"] },
+            "fast-food": { title: "🍔 Фастфуд: удобство или проблема?", args: ["Быстрое и доступное питание для занятых людей", "Высокое содержание калорий и вредных веществ", "Миллиардная индустрия создаёт рабочие места", "Эпидемия ожирения и диабета среди молодёжи"] },
+            "space-exploration": { title: "🚀 Космос: нужно ли тратить миллиарды?", args: ["Космические технологии дают новые изобретения", "Миллиарды можно потратить на решение земных проблем", "Колонизация других планет — шанс для выживания", "Космический мусор и милитаризация космоса"] },
+            "genetic-engineering": { title: "🧬 Генная инженерия: игра в Бога?", args: ["Возможность вылечить наследственные болезни", "Этические проблемы редактирования генома человека", "Увеличение урожайности и борьба с голодом", "Риск создания биологического оружия"] },
+            "electric-cars": { title: "🚗 Электромобили: спасение экологии?", args: ["Отсутствие выхлопных газов снижает загрязнение", "Производство батарей наносит вред природе", "Тишина и экономия на топливе", "Проблема утилизации отработанных батарей"] },
+            "home-education": { title: "🏠 Домашнее обучение: за и против", args: ["Индивидуальный подход и гибкий график", "Отсутствие социализации и навыков общения", "Защита от буллинга и стресса", "Большая нагрузка на родителей"] },
+            "cryptocurrency": { title: "💰 Криптовалюта: будущее финансов?", args: ["Децентрализация и независимость от банков", "Высокая волатильность и риски", "Быстрые и дешёвые переводы по всему миру", "Использование для нелегальных операций"] }
+        };
+
+        // ========== БОЛЬШАЯ БАЗА УНИКАЛЬНЫХ ТЕМ ДЛЯ ГЕНЕРАЦИИ ==========
+        const generatedTopicsBank = [
+            { emoji: "🌍", name: "Глобальное потепление: миф или реальность?", args: ["Наука подтверждает рост температуры", "Климат всегда менялся циклично", "Таяние ледников угрожает городам", "Это естественный процесс, не зависящий от человека"] },
+            { emoji: "🤖", name: "Искусственный интеллект: угроза или помощь?", args: ["ИИ может решать сложные задачи быстрее людей", "Риск потери контроля над ИИ", "ИИ помогает в медицине и науке", "Массовая безработица из-за автоматизации"] },
+            { emoji: "🎓", name: "Высшее образование: необходимость?", args: ["Диплом открывает двери к хорошей работе", "Многие успешные люди без высшего образования", "Университет даёт полезные связи", "Самообразование эффективнее в интернете"] },
+            { emoji: "🏥", name: "Бесплатная медицина: за и против", args: ["Доступ к лечению независимо от дохода", "Огромные расходы из бюджета", "Спасение жизней бедных слоёв населения", "Очереди и низкое качество услуг"] },
+            { emoji: "🍷", name: "Алкоголь: запретить или легализовать?", args: ["Запрет приведёт к чёрному рынку", "Алкоголь вредит здоровью", "Культура потребления важнее запретов", "Сухой закон не работает в истории"] },
+            { emoji: "🚬", name: "Курение в общественных местах: штрафовать?", args: ["Защита некурящих от пассивного курения", "Нарушение прав курящих", "Снижение числа курящих благодаря штрафам", "Штрафы не решают проблему зависимости"] },
+            { emoji: "📱", name: "Смартфоны в школе: разрешить или нет?", args: ["Смартфоны отвлекают от учёбы", "Могут использоваться для обучения", "Кибербуллинг в мессенджерах", "Родители могут связаться с детьми"] },
+            { emoji: "🎮", name: "Видеоигры: развивают или деградируют?", args: ["Стратегии развивают мышление", "Вызывают зависимость", "Обучают английскому языку", "Провоцируют агрессию"] },
+            { emoji: "🐄", name: "Веганство: этично или вредно?", args: ["Спасение животных от страданий", "Риск дефицита витаминов", "Снижение выбросов парниковых газов", "Не всем доступно по цене"] },
+            { emoji: "🏛️", name: "Смертная казнь: допустима?", args: ["Сдерживает особо тяжкие преступления", "Ошибки правосудия неисправимы", "Экономит бюджет на содержании", "Жизнь человека неприкосновенна"] },
+            { emoji: "🔫", name: "Легализация оружия: за и против", args: ["Граждане могут защитить себя", "Рост преступности и случайных убийств", "Сдерживание преступников", "Нужно ужесточить контроль, а не запрещать"] },
+            { emoji: "📖", name: "Домашнее задание: нужно ли?", args: ["Закрепляет пройденный материал", "Перегружает учеников", "Формирует самодисциплину", "Отнимает время на хобби и спорт"] },
+            { emoji: "🎨", name: "Искусство: может ли оно быть вредным?", args: ["Искусство вдохновляет и развивает", "Некоторые произведения пропагандируют насилие", "Искусство — свобода самовыражения", "Должна быть цензура для защиты детей"] },
+            { emoji: "🏋️", name: "Спорт в школе: обязательный или добровольный?", args: ["Спорт укрепляет здоровье", "Некоторым детям спорт противопоказан", "Формирует командный дух", "Унижает неспортивных детей"] },
+            { emoji: "🧠", name: "Нейроинтерфейсы: будущее или опасность?", args: ["Помогут парализованным людям", "Риск взлома мозга", "Ускорят обучение", "Нарушение приватности мыслей"] },
+            { emoji: "🌿", name: "Легализация марихуаны: за и против", args: ["Медицинское применение доказано", "Вредит психическому здоровью", "Снижение преступности", "Ворота к тяжёлым наркотикам"] },
+            { emoji: "✈️", name: "Авиаперелёты: нужно ли ограничивать?", args: ["Сильно загрязняют атмосферу", "Экономика туризма пострадает", "Можно заменить на поезда", "Слишком дорого для многих"] },
+            { emoji: "📺", name: "Реалити-шоу: развлечение или деградация?", args: ["Люди имеют право на любой досуг", "Пропаганда скандалов и интриг", "Создают кумиров из ничтожеств", "Это просто бизнес на эмоциях"] },
+            { emoji: "💊", name: "Антидепрессанты: переоценены?", args: ["Спасают жизни при депрессии", "Вызывают зависимость", "Доказано эффективны", "Лечат симптомы, а не причину"] },
+            { emoji: "🏙️", name: "Мегаполисы: удобно или стрессово?", args: ["Много работы и развлечений", "Высокая стоимость жизни", "Развитая инфраструктура", "Пробки и загрязнение воздуха"] },
+            { emoji: "📚", name: "Классическая литература: нужна в школе?", args: ["Формирует культурный код", "Скучна для современных детей", "Учит мыслить и сопереживать", "Устарела и неактуальна"] },
+            { emoji: "🤝", name: "Благотворительность: обязанность богатых?", args: ["У богатых есть ресурсы помогать", "Это личное дело каждого", "Снижает социальное неравенство", "Может использоваться для ухода от налогов"] },
+            { emoji: "🏛️", name: "Обязательный призыв в армию: нужен?", args: ["Формирует патриотизм и дисциплину", "Травмы и дедовщина", "Обеспечивает оборону страны", "Профессиональная армия эффективнее"] },
+            { emoji: "🔞", name: "Возраст согласия: повышать или нет?", args: ["Подростки не готовы к ответственности", "Это ограничение свободы", "Защита от эксплуатации", "Ранние отношения вредят психике"] },
+            { emoji: "💼", name: "Четырёхдневная рабочая неделя: возможно?", args: ["Повышает продуктивность", "Удлиняет рабочий день", "Улучшает баланс работы и жизни", "Не для всех профессий подходит"] }
+        ];
+
+        let generatedTopicsCounter = 0;
+        let usedGeneratedTopics = [];
+
+        // ========== ТРЕНИРОВКИ ==========
+        const trainingData = {
+            logic: { title: "🧠 Логика", difficulty: "novice", questions: [
+                { q: "Все люди смертны. Сократ — человек. Значит?", opts: ["Сократ бессмертен", "Сократ смертен", "Сократ — бог", "Нельзя определить"], correct: 1, explanation: "Силлогизм верен." },
+                { q: "Если идёт дождь, то асфальт мокрый. Асфальт мокрый. Значит, идёт дождь?", opts: ["Да", "Нет", "Иногда", "Зависит"], correct: 1, explanation: "Ошибка утверждения консеквента." },
+                { q: "А → Б, Б → В, следовательно?", opts: ["А → В", "В → А", "А и В", "Не следует"], correct: 0, explanation: "Транзитивность импликации." }
+            ]},
+            fallacies: { title: "⚠️ Логические ошибки", difficulty: "pro", questions: [
+                { q: "«Ты не можешь критиковать правительство, потому что сам не работаешь в нём». Это ошибка:", opts: ["Ad hominem", "Скользкий склон", "Ложная дихотомия", "Круг"], correct: 0, explanation: "Переход на личность." },
+                { q: "«Если разрешить аборты, то люди перестанут уважать жизнь». Это:", opts: ["Скользкий склон", "Чучело", "Апелляция к традиции", "Постулат"], correct: 0, explanation: "Преувеличение последствий." }
+            ]},
+            structure: { title: "📐 Структура аргумента", difficulty: "novice", questions: [
+                { q: "Что такое тезис?", opts: ["Доказательство", "Утверждение для обоснования", "Пример", "Контраргумент"], correct: 1, explanation: "Тезис — главная мысль." }
+            ]}
+        };
+
+        // ========== ВИКТОРИНЫ (УНИКАЛЬНЫЕ ВОПРОСЫ) ==========
+        const quizData = {
+            logic: { title: "Логика", time: 300, questions: [] },
+            fallacies: { title: "Ошибки", time: 360, questions: [] },
+            rhetoric: { title: "Риторика", time: 300, questions: [] },
+            argumentation: { title: "Аргументация", time: 300, questions: [] },
+            mixed: { title: "Смешанная", time: 600, questions: [] }
+        };
+
+        const logicQuestions = [
+            { q: "Что такое modus ponens?", opts: ["А → В, А, следовательно В", "А → В, не В, следовательно не А", "А или В, не А, следовательно В", "А и В, следовательно А"], correct: 0, points: 10 },
+            { q: "Что такое modus tollens?", opts: ["А → В, не В, следовательно не А", "А → В, А, следовательно В", "А или В, не А, следовательно В", "А и В, следовательно А"], correct: 0, points: 10 },
+            { q: "Какое утверждение является тавтологией?", opts: ["А и не А", "А или не А", "А → В", "А ↔ В"], correct: 1, points: 10 },
+            { q: "Что такое контрапозиция?", opts: ["А → В эквивалентно не В → не А", "А → В эквивалентно В → А", "А → В эквивалентно не А → не В", "А → В эквивалентно А и не В"], correct: 0, points: 10 }
+        ];
+        for (let q of logicQuestions) quizData.logic.questions.push(q);
+
+        const fallaciesQuestions = [
+            { q: "Ошибка 'соломенное чучело' — это:", opts: ["Искажение аргумента оппонента", "Атака на личность", "Ссылка на авторитет", "Круг в доказательстве"], correct: 0, points: 10 },
+            { q: "Ошибка 'апелляция к большинству' — это:", opts: ["'Все так делают, значит это правильно'", "'Ты сам не лучше'", "'Если не докажешь обратное, я прав'", "'Эксперты сказали'"], correct: 0, points: 10 }
+        ];
+        for (let q of fallaciesQuestions) quizData.fallacies.questions.push(q);
+
+        const rhetoricQuestions = [
+            { q: "Что такое анафора?", opts: ["Повтор начала предложений", "Повтор конца предложений", "Противопоставление", "Преувеличение"], correct: 0, points: 10 },
+            { q: "Что такое риторический вопрос?", opts: ["Вопрос без ответа", "Сложный вопрос", "Вопрос к аудитории", "Вопрос с подвохом"], correct: 0, points: 10 }
+        ];
+        for (let q of rhetoricQuestions) quizData.rhetoric.questions.push(q);
+
+        const argumentationQuestions = [
+            { q: "Что такое аргументация?", opts: ["Процесс приведения доводов", "Спор", "Дискуссия", "Монолог"], correct: 0, points: 10 },
+            { q: "Что такое энтимема?", opts: ["Сокращённый силлогизм", "Логическая ошибка", "Риторическая фигура", "Вид доказательства"], correct: 0, points: 10 }
+        ];
+        for (let q of argumentationQuestions) quizData.argumentation.questions.push(q);
+
+        quizData.mixed.questions = [...quizData.logic.questions, ...quizData.fallacies.questions, ...quizData.rhetoric.questions, ...quizData.argumentation.questions];
+
+        // ========== РИТОРИКА (30+ ТЕРМИНОВ) ==========
+        const rhetoricData = [
+            { title: "🏛️ Аналогия", desc: "Сравнение для пояснения мысли", example: "Как дерево нуждается в воде, так и разум в знаниях" },
+            { title: "⚖️ Антитеза", desc: "Противопоставление для усиления", example: "Лёд и пламень, стихи и проза" },
+            { title: "❓ Риторический вопрос", desc: "Вопрос, не требующий ответа", example: "Кто из нас не мечтает о счастье?" },
+            { title: "📈 Градация", desc: "Постепенное усиление", example: "Пришёл, увидел, победил" },
+            { title: "🔁 Анафора", desc: "Повтор начала предложений", example: "Мы не сдадимся! Мы победим!" },
+            { title: "🔄 Эпифора", desc: "Повтор конца предложений", example: "Мы хотим мира, мы боремся за мира" },
+            { title: "📊 Статистика", desc: "Использование числовых данных", example: "85% людей согласны" },
+            { title: "🎯 Метафора", desc: "Скрытое сравнение", example: "Время — деньги" },
+            { title: "📖 Гипербола", desc: "Преувеличение", example: "Я повторял это тысячу раз" },
+            { title: "🎭 Ирония", desc: "Скрытая насмешка", example: "Какой удивительный аргумент!" },
+            { title: "📜 Парадокс", desc: "Противоречивое утверждение", example: "Чем больше я учусь, тем меньше знаю" },
+            { title: "🔄 Оксюморон", desc: "Сочетание несочетаемого", example: "Живой труп, горячий лёд" }
+        ];
+
+        // ========== ДОСТИЖЕНИЯ ==========
+        const achievementsList = [
+            { id: "first_debate", name: "🚀 Первый дебат", desc: "Проведи свои первые дебаты", requirement: "Проведи 1 дебат", target: 1, check: (s) => s.totalDebates >= 1, current: (s) => s.totalDebates },
+            { id: "first_win", name: "🏆 Первая победа", desc: "Одержи свою первую победу", requirement: "Выиграй 1 дебат", target: 1, check: (s) => s.wins >= 1, current: (s) => s.wins },
+            { id: "debate_master", name: "🎯 Мастер дебатов", desc: "Проведи много дебатов", requirement: "Проведи 10 дебатов", target: 10, check: (s) => s.totalDebates >= 10, current: (s) => s.totalDebates },
+            { id: "quiz_lover", name: "📚 Любитель викторин", desc: "Пройди несколько викторин", requirement: "Пройди 5 викторин", target: 5, check: (s) => s.quizzesCompleted >= 5, current: (s) => s.quizzesCompleted }
+        ];
+
+        // ========== БАЗА ВОПРОСОВ ДЛЯ ЭКЗАМЕНА ==========
+        const examQuestionBank = [
+            { q: "Что такое аргументация?", opts: ["Процесс приведения доводов", "Спор", "Дискуссия", "Монолог"], correct: 0, points: 10 },
+            { q: "Что такое тезис в аргументации?", opts: ["Доказываемое положение", "Довод", "Пример", "Вывод"], correct: 0, points: 10 },
+            { q: "Что такое контраргумент?", opts: ["Опровержение довода", "Согласие", "Новый тезис", "Повтор"], correct: 0, points: 10 },
+            { q: "Что такое силлогизм?", opts: ["Умозаключение из двух посылок", "Риторическая фигура", "Ошибка", "Доказательство"], correct: 0, points: 10 },
+            { q: "Что такое софизм?", opts: ["Намеренная логическая ошибка", "Случайная ошибка", "Сильный аргумент", "Риторический приём"], correct: 0, points: 10 }
+        ];
+
+        // ========== ПЕРЕМЕННЫЕ ==========
+        let currentUser = null;
+        let userStats = {
+            name: "Гость", level: 1, exp: 0, totalDebates: 0, wins: 0, losses: 0,
+            trainingCompleted: 0, quizScore: 0, quizzesCompleted: 0, perfectQuizzes: 0, fastDebates: 0,
+            achievements: [], lastDailyBonus: null, dailyStreak: 0, topicsStats: {}
+        };
+
+        let currentTopic = null, currentArgIndex = 0, userScore = 0, aiScore = 0;
+        let currentTraining = null, trainingIndex = 0, selectedTrainingOpt = null;
+        let currentQuiz = null, quizQuestions = [], quizIndex = 0, quizUserScore = 0, quizTimer = 0, quizInterval = null;
+        let examQuestions = [], examIndex = 0, examScoreTotal = 0, examTimer = 0, examInterval = null;
+        let timer = 180;
+        let timerInterval = null;
+
+        // ========== УВЕДОМЛЕНИЯ ==========
+        function showNotification(message, type = 'info') {
+            const area = document.getElementById('notificationArea');
+            const notif = document.createElement('div');
+            notif.className = `notification ${type}`;
+            notif.innerHTML = `<div class="notification-title">${type === 'success' ? '✅ Успех' : type === 'error' ? '❌ Ошибка' : type === 'warning' ? '⚠️ Внимание' : 'ℹ️ Информация'}</div><div class="notification-message">${message}</div>`;
+            area.appendChild(notif);
+            setTimeout(() => notif.remove(), 4000);
+        }
+
+        function showAchievementInfo(achId) {
+            const ach = achievementsList.find(a => a.id === achId);
+            if (!ach) return;
+            const isUnlocked = userStats.achievements.includes(achId);
+            const current = ach.current(userStats);
+            document.getElementById('achievementModalIcon').textContent = isUnlocked ? '🏆' : '🔒';
+            document.getElementById('achievementModalName').textContent = ach.name;
+            document.getElementById('achievementModalDesc').innerHTML = `${ach.desc}<br><br><strong>Условие:</strong> ${ach.requirement}<br><strong>Прогресс:</strong> ${current}/${ach.target}`;
+            document.getElementById('achievementModal').classList.add('active');
+        }
+
+        function showAlert(title, message, icon = 'ℹ️', onConfirm = null) {
+            document.getElementById('alertTitle').textContent = title;
+            document.getElementById('alertMessage').textContent = message;
+            document.getElementById('alertIcon').textContent = icon;
+            const confirmBtn = document.getElementById('alertConfirmBtn');
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            newConfirmBtn.addEventListener('click', () => {
+                document.getElementById('alertModal').classList.remove('active');
+                if (onConfirm) onConfirm();
+            });
+            document.getElementById('alertModal').classList.add('active');
+        }
+
+        function showPrompt(title, message, placeholder = '', callback) {
+            document.getElementById('promptTitle').textContent = title;
+            document.getElementById('promptMessage').textContent = message;
+            document.getElementById('promptInput').value = '';
+            document.getElementById('promptInput').placeholder = placeholder;
+            const confirmBtn = document.getElementById('promptConfirmBtn');
+            const cancelBtn = document.getElementById('promptCancelBtn');
+            const newConfirmBtn = confirmBtn.cloneNode(true);
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            newConfirmBtn.addEventListener('click', () => {
+                const value = document.getElementById('promptInput').value;
+                document.getElementById('promptModal').classList.remove('active');
+                if (value && callback) callback(value);
+            });
+            newCancelBtn.addEventListener('click', () => {
+                document.getElementById('promptModal').classList.remove('active');
+                if (callback) callback(null);
+            });
+            document.getElementById('promptModal').classList.add('active');
+        }
+
+        // ========== СИСТЕМА АККАУНТА ==========
+        function getRank() {
+            const wins = userStats.wins;
+            if (wins < 3) return "Новичок";
+            if (wins < 10) return "Ученик";
+            if (wins < 25) return "Оратор";
+            if (wins < 50) return "Мастер";
+            if (wins < 100) return "Эксперт";
+            return "Легенда";
+        }
+
+        function saveStats() {
+            if (currentUser) localStorage.setItem(`sb_${currentUser}`, JSON.stringify(userStats));
+        }
+
+        function loadStats(username) {
+            const data = localStorage.getItem(`sb_${username}`);
+            if (data) {
+                userStats = JSON.parse(data);
+            } else {
+                userStats = { name: username, level: 1, exp: 0, totalDebates: 0, wins: 0, losses: 0, trainingCompleted: 0, quizScore: 0, quizzesCompleted: 0, perfectQuizzes: 0, fastDebates: 0, achievements: [], lastDailyBonus: null, dailyStreak: 0, topicsStats: {} };
+                saveStats();
+            }
+            checkDailyBonus();
+            updateUI();
+        }
+
+        function checkDailyBonus() {
+            const today = new Date().toDateString();
+            if (userStats.lastDailyBonus !== today) {
+                const bonus = 20 + (userStats.dailyStreak * 5);
+                userStats.lastDailyBonus = today;
+                userStats.dailyStreak = (userStats.dailyStreak || 0) + 1;
+                addExp(bonus);
+                showNotification(`🎁 Ежедневный бонус! +${bonus} опыта`, 'success');
+            }
+        }
+
+        function addExp(amount) {
+            userStats.exp += amount;
+            let newLevel = userStats.level;
+            while (userStats.exp >= newLevel * 100) {
+                userStats.exp -= newLevel * 100;
+                newLevel++;
+            }
+            if (newLevel > userStats.level) {
+                userStats.level = newLevel;
+                showNotification(`🎉 Уровень повышен до ${userStats.level}!`, 'success');
+            }
+            updateUI();
+            saveStats();
+        }
+
+        function updateUI() {
+            document.getElementById('userName').textContent = userStats.name;
+            document.getElementById('userAvatar').textContent = userStats.name.charAt(0).toUpperCase();
+            document.getElementById('userLevel').textContent = userStats.level;
+            document.getElementById('profileName').textContent = userStats.name;
+            document.getElementById('profileLevel').textContent = userStats.level;
+            document.getElementById('profileAvatar').textContent = userStats.name.charAt(0).toUpperCase();
+            document.getElementById('userRank').textContent = getRank();
+            document.getElementById('profileRank').textContent = getRank();
+
+            const expNeeded = userStats.level * 100;
+            const progress = Math.min((userStats.exp / expNeeded) * 100, 100);
+            document.getElementById('userProgress').style.width = `${progress}%`;
+
+            if (currentUser) {
+                document.getElementById('userBar').style.display = 'flex';
+            } else {
+                document.getElementById('userBar').style.display = 'none';
+            }
+            updateStatsDisplay();
+            updateAchievements();
+        }
+
+        function updateStatsDisplay() {
+            const grid = document.getElementById('statsGrid');
+            if (grid) {
+                grid.innerHTML = `
+                    <div class="stat-card"><div class="stat-value">${getRank()}</div><div>Ранг</div></div>
+                    <div class="stat-card"><div class="stat-value">${userStats.totalDebates}</div><div>Дебатов</div></div>
+                    <div class="stat-card"><div class="stat-value">${userStats.wins}</div><div>Побед</div></div>
+                    <div class="stat-card"><div class="stat-value">${userStats.quizScore}</div><div>Очки викторин</div></div>
+                    <div class="stat-card"><div class="stat-value">${userStats.trainingCompleted}</div><div>Тренировок</div></div>
+                `;
+            }
+        }
+
+        function updateAchievements() {
+            const grid = document.getElementById('achievementsGrid');
+            if (grid) {
+                grid.innerHTML = achievementsList.map(ach => {
+                    const unlocked = userStats.achievements.includes(ach.id);
+                    const current = ach.current(userStats);
+                    const percent = Math.min((current / ach.target) * 100, 100);
+                    return `
+                        <div class="card" data-achievement="${ach.id}" style="opacity: ${unlocked ? 1 : 0.8}; cursor:pointer;">
+                            <div class="card-icon">${ach.name.split(' ')[0]}</div>
+                            <h3>${ach.name}</h3>
+                            <p>${ach.desc}</p>
+                            <div class="progress-bar" style="background:#e2e8f0; margin-top:10px;"><div class="progress-fill" style="width:${percent}%; background:#10b981;"></div></div>
+                            <small>${current}/${ach.target}</small>
+                            ${unlocked ? '<small style="color:#10b981; display:block;">✓ Разблокировано</small>' : ''}
+                        </div>
+                    `;
+                }).join('');
+                document.querySelectorAll('[data-achievement]').forEach(card => {
+                    card.addEventListener('click', () => showAchievementInfo(card.dataset.achievement));
+                });
+            }
+        }
+
+        function checkAchievements() {
+            let newUnlocked = false;
+            achievementsList.forEach(ach => {
+                if (!userStats.achievements.includes(ach.id) && ach.check(userStats)) {
+                    userStats.achievements.push(ach.id);
+                    showNotification(`🏆 Новое достижение: ${ach.name}!`, 'success');
+                    newUnlocked = true;
+                }
+            });
+            if (newUnlocked) {
+                updateAchievements();
+                saveStats();
+            }
+        }
+
+        function updateUsersList() {
+            const select = document.getElementById('usersSelect');
+            const users = [];
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                if (key && key.startsWith('sb_')) users.push(key.replace('sb_', ''));
+            }
+            select.innerHTML = '<option value="">-- Выбрать аккаунт --</option>' + users.map(u => `<option value="${u}">${u}</option>`).join('');
+        }
+
+        // ========== ДЕБАТЫ ==========
+        function renderTopics() {
+            const grid = document.getElementById('topicsGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            Object.keys(topicsData).forEach(key => {
+                const topic = topicsData[key];
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-topic', key);
+                card.innerHTML = `<div class="card-icon"><i class="fas fa-comments"></i></div><h3>${topic.title}</h3><p>Обсудите с ИИ-оппонентом</p>`;
+                card.addEventListener('click', () => startDebate(key));
+                grid.appendChild(card);
+            });
+        }
+
+        // ========== ГЕНЕРАЦИЯ УНИКАЛЬНОЙ ТЕМЫ (НЕ ПОВТОРЯЕТСЯ) ==========
+        function generateUniqueTopic() {
+            // Если все темы из банка уже использованы, сбрасываем список
+            if (usedGeneratedTopics.length >= generatedTopicsBank.length) {
+                usedGeneratedTopics = [];
+                showNotification("🔄 Все темы использованы! Начинаем новый цикл", 'info');
+            }
+            
+            // Выбираем случайную тему, которая ещё не использовалась
+            let availableTopics = generatedTopicsBank.filter((_, idx) => !usedGeneratedTopics.includes(idx));
+            let randomIndex = Math.floor(Math.random() * availableTopics.length);
+            let originalIndex = generatedTopicsBank.findIndex(t => t === availableTopics[randomIndex]);
+            
+            usedGeneratedTopics.push(originalIndex);
+            const selected = availableTopics[randomIndex];
+            
+            generatedTopicsCounter++;
+            return {
+                id: `generated_${Date.now()}_${generatedTopicsCounter}`,
+                title: `${selected.emoji} ${selected.name}`,
+                args: selected.args
+            };
+        }
+
+        // ========== ДЕБАТЫ ==========
+        function startDebate(topicId) {
+            currentTopic = topicId;
+            currentArgIndex = 0;
+            userScore = 0;
+            aiScore = 0;
+            timer = 180;
+            document.getElementById('debateArea').style.display = 'block';
+            document.getElementById('topicsSection').classList.remove('active');
+            document.getElementById('debateTopic').textContent = topicsData[topicId].title;
+            document.getElementById('messagesContainer').innerHTML = '';
+            updateDebateStats();
+            addMessage("Начнём дебаты! Первый аргумент ИИ:", 'ai');
+            addAIArgument();
+            startTimer();
+        }
+
+        function addMessage(text, type) {
+            const container = document.getElementById('messagesContainer');
+            const div = document.createElement('div');
+            div.className = `message ${type}`;
+            div.innerHTML = `<div class="avatar"><i class="fas ${type === 'ai' ? 'fa-robot' : 'fa-user'}"></i></div><div class="message-content">${text}</div>`;
+            container.appendChild(div);
+            div.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function addAIArgument() {
+            const args = topicsData[currentTopic].args;
+            if (currentArgIndex < args.length) {
+                addMessage(args[currentArgIndex], 'ai');
+                aiScore++;
+                currentArgIndex++;
+            } else {
+                addMessage("Я всё сказал. Ваш ход!", 'ai');
+            }
+            updateDebateStats();
+        }
+
+        function updateDebateStats() {
+            document.getElementById('debateStats').textContent = `Счёт: Вы ${userScore} - ${aiScore} ИИ`;
+        }
+
+        function handleCounter() {
+            showPrompt("Контраргумент", "Введите ваш аргумент против утверждения ИИ:", "Ваш контраргумент...", (arg) => {
+                if (arg && arg.trim()) {
+                    addMessage(arg, 'user');
+                    userScore++;
+                    updateDebateStats();
+                    setTimeout(() => addAIArgument(), 800);
+                }
+            });
+        }
+
+        function handleAgree() {
+            addMessage("Согласен с этим аргументом", 'user');
+            aiScore++;
+            updateDebateStats();
+            addAIArgument();
+        }
+
+        function finishDebate() {
+            if (timerInterval) clearInterval(timerInterval);
+            const won = userScore > aiScore;
+            const winner = won ? "Победа!" : (aiScore > userScore ? "Поражение" : "Ничья");
+            if (userScore > aiScore) userStats.wins++;
+            else if (aiScore > userScore) userStats.losses++;
+            userStats.totalDebates++;
+            if (180 - timer < 120) userStats.fastDebates = (userStats.fastDebates || 0) + 1;
+            const expGain = 50 + (won ? 25 : 0);
+            addExp(expGain);
+            checkAchievements();
+            saveStats();
+            showAlert(winner, `Счёт ${userScore}:${aiScore}\nПолучено опыта: +${expGain}`, won ? '🏆' : '🤝');
+            document.getElementById('debateArea').style.display = 'none';
+            document.getElementById('topicsSection').classList.add('active');
+        }
+
+        function startTimer() {
+            if (timerInterval) clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                if (timer <= 0) finishDebate();
+                else timer--;
+            }, 1000);
+        }
+
+        // ========== ТРЕНИРОВКИ ==========
+        function renderTraining() {
+            const grid = document.getElementById('trainingGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            Object.keys(trainingData).forEach(key => {
+                const t = trainingData[key];
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-training', key);
+                card.innerHTML = `<div class="card-icon">${t.title.split(' ')[0]}</div><h3>${t.title}</h3><p>${t.difficulty === 'novice' ? '📘 Для начинающих' : '🔥 Продвинутый'}<br>${t.questions.length} упражнений</p>`;
+                card.addEventListener('click', () => startTraining(key));
+                grid.appendChild(card);
+            });
+        }
+
+        function startTraining(type) {
+            currentTraining = type;
+            trainingIndex = 0;
+            selectedTrainingOpt = null;
+            loadTrainingQuestion();
+            document.getElementById('trainingModal').classList.add('active');
+        }
+
+        function loadTrainingQuestion() {
+            const q = trainingData[currentTraining].questions[trainingIndex];
+            document.getElementById('trainingTitle').textContent = trainingData[currentTraining].title;
+            document.getElementById('trainingQuestion').textContent = q.q;
+            const optsDiv = document.getElementById('trainingOptions');
+            optsDiv.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'exercise-option';
+                optDiv.setAttribute('data-opt', i);
+                optDiv.textContent = opt;
+                optDiv.addEventListener('click', function() {
+                    document.querySelectorAll('#trainingOptions .exercise-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedTrainingOpt = i;
+                });
+                optsDiv.appendChild(optDiv);
+            });
+            document.getElementById('trainingFeedback').style.display = 'none';
+            document.getElementById('trainingCheckBtn').style.display = 'block';
+            document.getElementById('trainingNextBtn').style.display = 'none';
+        }
+
+        function checkTraining() {
+            if (selectedTrainingOpt === null) {
+                showNotification("Выберите ответ", 'warning');
+                return;
+            }
+            const q = trainingData[currentTraining].questions[trainingIndex];
+            const isCorrect = selectedTrainingOpt === q.correct;
+            const feedback = document.getElementById('trainingFeedback');
+            feedback.style.display = 'block';
+            feedback.innerHTML = isCorrect ? `✅ Правильно! ${q.explanation || ''}` : `❌ Неправильно! ${q.explanation || ''}`;
+            if (isCorrect) {
+                userStats.trainingCompleted++;
+                addExp(10);
+                saveStats();
+                checkAchievements();
+                showNotification("Правильный ответ! +10 опыта", 'success');
+            }
+            document.getElementById('trainingCheckBtn').style.display = 'none';
+            document.getElementById('trainingNextBtn').style.display = 'block';
+        }
+
+        function nextTraining() {
+            if (trainingIndex + 1 < trainingData[currentTraining].questions.length) {
+                trainingIndex++;
+                selectedTrainingOpt = null;
+                loadTrainingQuestion();
+            } else {
+                document.getElementById('trainingModal').classList.remove('active');
+                showNotification("🏆 Тренировка завершена!", 'success');
+            }
+        }
+
+        // ========== ВИКТОРИНЫ ==========
+        function renderQuiz() {
+            const grid = document.getElementById('quizGrid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            Object.keys(quizData).forEach(key => {
+                const q = quizData[key];
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.setAttribute('data-quiz', key);
+                card.innerHTML = `<div class="card-icon">📚</div><h3>${q.title}</h3><p>${q.questions.length} вопросов · ${Math.floor(q.time / 60)} мин</p>`;
+                card.addEventListener('click', () => startQuiz(key));
+                grid.appendChild(card);
+            });
+        }
+
+        function startQuiz(type) {
+            currentQuiz = type;
+            quizQuestions = [...quizData[type].questions];
+            quizIndex = 0;
+            quizUserScore = 0;
+            quizTimer = quizData[type].time;
+            document.getElementById('quizScore').textContent = '0';
+            updateQuizTimer();
+            loadQuizQuestion();
+            document.getElementById('quizModal').classList.add('active');
+            if (quizInterval) clearInterval(quizInterval);
+            quizInterval = setInterval(() => {
+                if (quizTimer <= 0) finishQuiz(true);
+                else { quizTimer--; updateQuizTimer(); }
+            }, 1000);
+        }
+
+        function updateQuizTimer() {
+            const m = Math.floor(quizTimer / 60), s = quizTimer % 60;
+            document.getElementById('quizTimer').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function loadQuizQuestion() {
+            if (quizIndex >= quizQuestions.length) { finishQuiz(false); return; }
+            const q = quizQuestions[quizIndex];
+            document.getElementById('quizCounter').textContent = `Вопрос ${quizIndex + 1}/${quizQuestions.length}`;
+            document.getElementById('quizQuestion').textContent = q.q;
+            const optsDiv = document.getElementById('quizOptions');
+            optsDiv.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'exercise-option';
+                optDiv.setAttribute('data-opt', i);
+                optDiv.textContent = opt;
+                optDiv.addEventListener('click', function() {
+                    document.querySelectorAll('#quizOptions .exercise-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    window.quizSelectedOpt = i;
+                });
+                optsDiv.appendChild(optDiv);
+            });
+            document.getElementById('quizFeedback').style.display = 'none';
+            document.getElementById('quizCheckBtn').style.display = 'block';
+            document.getElementById('quizNextBtn').style.display = 'none';
+        }
+
+        function checkQuiz() {
+            if (window.quizSelectedOpt === undefined) {
+                showNotification("Выберите ответ", 'warning');
+                return;
+            }
+            const q = quizQuestions[quizIndex];
+            const isCorrect = window.quizSelectedOpt === q.correct;
+            if (isCorrect) {
+                quizUserScore += q.points;
+                document.getElementById('quizScore').textContent = quizUserScore;
+                showNotification("✅ Правильно! +" + q.points + " очков", 'success');
+            } else {
+                showNotification("❌ Неправильно!", 'error');
+            }
+            document.getElementById('quizCheckBtn').style.display = 'none';
+            document.getElementById('quizNextBtn').style.display = 'block';
+        }
+
+        function nextQuiz() {
+            quizIndex++;
+            loadQuizQuestion();
+            window.quizSelectedOpt = undefined;
+        }
+
+        function finishQuiz(timeout) {
+            if (quizInterval) clearInterval(quizInterval);
+            userStats.quizScore += quizUserScore;
+            userStats.quizzesCompleted++;
+            const correctCount = Math.floor(quizUserScore / 10);
+            if (correctCount === quizQuestions.length) {
+                userStats.perfectQuizzes = (userStats.perfectQuizzes || 0) + 1;
+                showNotification("💯 Идеальная викторина!", 'success');
+            }
+            addExp(Math.floor(quizUserScore / 2));
+            checkAchievements();
+            saveStats();
+            document.getElementById('quizModal').classList.remove('active');
+            document.getElementById('quizFinalScore').textContent = quizUserScore;
+            document.getElementById('quizCorrectCount').textContent = `${correctCount}/${quizQuestions.length}`;
+            document.getElementById('quizAccuracy').textContent = `${Math.round((quizUserScore / (quizQuestions.length * 10)) * 100)}%`;
+            document.getElementById('quizResultsModal').classList.add('active');
+        }
+
+        // ========== ЭКЗАМЕН ==========
+        function generateExam() {
+            const shuffled = [...examQuestionBank];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled.slice(0, 50).map((q, idx) => ({
+                q: `${idx + 1}. ${q.q}`,
+                opts: q.opts,
+                correct: q.correct,
+                points: q.points || 10
+            }));
+        }
+
+        function startExam() {
+            examQuestions = generateExam();
+            examIndex = 0;
+            examScoreTotal = 0;
+            examTimer = 1800;
+            document.getElementById('examScore').textContent = '0';
+            updateExamTimer();
+            loadExamQuestion();
+            document.getElementById('examModal').classList.add('active');
+            if (examInterval) clearInterval(examInterval);
+            examInterval = setInterval(() => {
+                if (examTimer <= 0) finishExam(true);
+                else { examTimer--; updateExamTimer(); }
+            }, 1000);
+        }
+
+        function updateExamTimer() {
+            const m = Math.floor(examTimer / 60), s = examTimer % 60;
+            document.getElementById('examTimer').textContent = `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function loadExamQuestion() {
+            if (examIndex >= examQuestions.length) { finishExam(false); return; }
+            const q = examQuestions[examIndex];
+            document.getElementById('examCounter').textContent = `Вопрос ${examIndex + 1}/${examQuestions.length}`;
+            document.getElementById('examQuestion').textContent = q.q;
+            const optsDiv = document.getElementById('examOptions');
+            optsDiv.innerHTML = '';
+            q.opts.forEach((opt, i) => {
+                const optDiv = document.createElement('div');
+                optDiv.className = 'exercise-option';
+                optDiv.setAttribute('data-opt', i);
+                optDiv.textContent = opt;
+                optDiv.addEventListener('click', function() {
+                    document.querySelectorAll('#examOptions .exercise-option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    window.examSelectedOpt = i;
+                });
+                optsDiv.appendChild(optDiv);
+            });
+            document.getElementById('examCheckBtn').style.display = 'block';
+            document.getElementById('examNextBtn').style.display = 'none';
+        }
+
+        function checkExam() {
+            if (window.examSelectedOpt === undefined) {
+                showNotification("Выберите ответ", 'warning');
+                return;
+            }
+            const q = examQuestions[examIndex];
+            const isCorrect = window.examSelectedOpt === q.correct;
+            if (isCorrect) {
+                examScoreTotal += q.points;
+                document.getElementById('examScore').textContent = examScoreTotal;
+            }
+            document.getElementById('examCheckBtn').style.display = 'none';
+            document.getElementById('examNextBtn').style.display = 'block';
+        }
+
+        function nextExam() {
+            examIndex++;
+            loadExamQuestion();
+            window.examSelectedOpt = undefined;
+        }
+
+        function finishExam(timeout) {
+            if (examInterval) clearInterval(examInterval);
+            const percent = Math.round((examScoreTotal / (examQuestions.length * 10)) * 100);
+            addExp(Math.floor(examScoreTotal / 5));
+            document.getElementById('certificateName').textContent = userStats.name;
+            document.getElementById('certificateScore').textContent = examScoreTotal;
+            document.getElementById('certificatePercent').textContent = percent + "%";
+            const timeSpent = 1800 - examTimer;
+            document.getElementById('certificateTime').textContent = `${Math.floor(timeSpent / 60)}:${(timeSpent % 60).toString().padStart(2, '0')}`;
+            document.getElementById('certificateDate').textContent = new Date().toLocaleDateString();
+            document.getElementById('examModal').classList.remove('active');
+            document.getElementById('certificateModal').classList.add('active');
+            showNotification(`Экзамен завершён! Результат: ${examScoreTotal} очков (${percent}%)`, 'success');
+        }
+
+        // ========== РИТОРИКА ==========
+        function renderRhetoric() {
+            const grid = document.getElementById('rhetoricGrid');
+            if (!grid) return;
+            grid.innerHTML = rhetoricData.map(r => `
+                <div class="rhetoric-card">
+                    <h4>${r.title}</h4>
+                    <p>${r.desc}</p>
+                    <small>📖 Пример: ${r.example}</small>
+                </div>
+            `).join('');
+        }
+
+        // ========== НАВИГАЦИЯ ==========
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.getElementById(sectionId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+            const btnSection = sectionId.replace('Section', '');
+            document.querySelector(`.nav-btn[data-section="${btnSection}"]`).classList.add('active');
+        }
+
+        // ========== ИНИЦИАЛИЗАЦИЯ ==========
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTopics();
+            renderTraining();
+            renderQuiz();
+            renderRhetoric();
+            updateStatsDisplay();
+            updateAchievements();
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const section = btn.dataset.section;
+                    if (section === 'exam') showSection('examSection');
+                    else showSection(section + 'Section');
+                });
+            });
+
+            document.getElementById('counterBtn').addEventListener('click', handleCounter);
+            document.getElementById('agreeBtn').addEventListener('click', handleAgree);
+            document.getElementById('nextArgBtn').addEventListener('click', addAIArgument);
+            document.getElementById('finishDebateBtn').addEventListener('click', finishDebate);
+            document.getElementById('closeDebateBtn').addEventListener('click', finishDebate);
+            
+            // ========== ГЕНЕРАЦИЯ УНИКАЛЬНОЙ ТЕМЫ (НЕ ПОВТОРЯЕТСЯ) ==========
+            document.getElementById('generateTopicBtn').addEventListener('click', () => {
+                const newTopic = generateUniqueTopic();
+                topicsData[newTopic.id] = { 
+                    title: newTopic.title, 
+                    args: newTopic.args 
+                };
+                renderTopics();
+                showNotification(`✨ Новая тема "${newTopic.title}" создана!`, 'success');
+            });
+            
+            document.getElementById('startExamBtn').addEventListener('click', startExam);
+            document.getElementById('exportStatsBtn').addEventListener('click', () => {
+                const statsText = `Speech Battle - Статистика ${userStats.name}\nДебатов: ${userStats.totalDebates}\nПобед: ${userStats.wins}\nОчки викторин: ${userStats.quizScore}\nТренировок: ${userStats.trainingCompleted}`;
+                navigator.clipboard.writeText(statsText);
+                showNotification("📋 Статистика скопирована!", 'success');
+            });
+
+            document.getElementById('trainingHintBtn').addEventListener('click', () => showNotification("💡 Подумайте о логике", 'info'));
+            document.getElementById('trainingCheckBtn').addEventListener('click', checkTraining);
+            document.getElementById('trainingNextBtn').addEventListener('click', nextTraining);
+            document.getElementById('closeTrainingModal').addEventListener('click', () => document.getElementById('trainingModal').classList.remove('active'));
+
+            document.getElementById('quizCheckBtn').addEventListener('click', checkQuiz);
+            document.getElementById('quizNextBtn').addEventListener('click', nextQuiz);
+            document.getElementById('quizSkipBtn').addEventListener('click', () => { quizIndex++; loadQuizQuestion(); });
+            document.getElementById('closeQuizModal').addEventListener('click', () => { if (quizInterval) clearInterval(quizInterval); document.getElementById('quizModal').classList.remove('active'); });
+            document.getElementById('closeQuizResultsModal').addEventListener('click', () => document.getElementById('quizResultsModal').classList.remove('active'));
+            document.getElementById('quizResultsCloseBtn').addEventListener('click', () => document.getElementById('quizResultsModal').classList.remove('active'));
+
+            document.getElementById('examCheckBtn').addEventListener('click', checkExam);
+            document.getElementById('examNextBtn').addEventListener('click', nextExam);
+            document.getElementById('examSkipBtn').addEventListener('click', () => { examIndex++; loadExamQuestion(); });
+            document.getElementById('examFinishBtn').addEventListener('click', () => finishExam(false));
+            document.getElementById('closeExamModal').addEventListener('click', () => { if (examInterval) clearInterval(examInterval); document.getElementById('examModal').classList.remove('active'); });
+            document.getElementById('closeCertificateModal').addEventListener('click', () => document.getElementById('certificateModal').classList.remove('active'));
+            document.getElementById('certificateCloseBtn').addEventListener('click', () => document.getElementById('certificateModal').classList.remove('active'));
+
+            document.getElementById('accountBtn').addEventListener('click', () => { updateUsersList(); document.getElementById('accountModal').classList.add('active'); });
+            document.getElementById('closeAccountModal').addEventListener('click', () => document.getElementById('accountModal').classList.remove('active'));
+            document.getElementById('closeStatusModal').addEventListener('click', () => document.getElementById('statusModal').classList.remove('active'));
+            document.getElementById('closeAlertModal').addEventListener('click', () => document.getElementById('alertModal').classList.remove('active'));
+            document.getElementById('closePromptModal').addEventListener('click', () => document.getElementById('promptModal').classList.remove('active'));
+            document.getElementById('closeAchievementModal').addEventListener('click', () => document.getElementById('achievementModal').classList.remove('active'));
+            document.getElementById('achievementModalCloseBtn').addEventListener('click', () => document.getElementById('achievementModal').classList.remove('active'));
+
+            document.getElementById('loginBtn').addEventListener('click', () => {
+                const name = document.getElementById('username').value.trim();
+                if (name) {
+                    currentUser = name;
+                    loadStats(name);
+                    document.getElementById('accountModal').classList.remove('active');
+                    showNotification(`👋 Добро пожаловать, ${name}!`, 'success');
+                    if (!localStorage.getItem(`status_${name}`)) {
+                        document.getElementById('statusModal').classList.add('active');
+                    }
+                } else showNotification("Введите имя", 'warning');
+            });
+
+            document.getElementById('switchUserBtn').addEventListener('click', () => {
+                const select = document.getElementById('usersSelect');
+                const name = select.value;
+                if (name) {
+                    currentUser = name;
+                    loadStats(name);
+                    document.getElementById('accountModal').classList.remove('active');
+                    showNotification(`👋 Переключено на ${name}`, 'success');
+                } else showNotification("Выберите аккаунт", 'warning');
+            });
+
+            document.getElementById('logoutBtn').addEventListener('click', () => {
+                currentUser = null;
+                userStats = { name: "Гость", level: 1, exp: 0, totalDebates: 0, wins: 0, losses: 0, trainingCompleted: 0, quizScore: 0, quizzesCompleted: 0, perfectQuizzes: 0, fastDebates: 0, achievements: [], lastDailyBonus: null, dailyStreak: 0, topicsStats: {} };
+                updateUI();
+                document.getElementById('accountModal').classList.remove('active');
+                showNotification("👋 Вы вышли из аккаунта", 'info');
+            });
+
+            let selectedStatus = null;
+            document.querySelectorAll('.status-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    document.querySelectorAll('.status-card').forEach(c => c.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedStatus = this.dataset.status;
+                });
+            });
+
+            document.getElementById('confirmStatusBtn').addEventListener('click', () => {
+                if (selectedStatus && currentUser) {
+                    localStorage.setItem(`status_${currentUser}`, selectedStatus);
+                    document.getElementById('statusModal').classList.remove('active');
+                    showNotification("🎉 Статус сохранён!", 'success');
+                } else if (!currentUser) {
+                    showNotification("Сначала войдите в аккаунт", 'warning');
+                    document.getElementById('statusModal').classList.remove('active');
+                } else showNotification("Выберите статус", 'warning');
+            });
+
+            document.querySelectorAll('.modal').forEach(modal => {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) modal.classList.remove('active');
+                });
+            });
+
+            const lastUser = localStorage.getItem('lastUser');
+            if (lastUser) {
+                currentUser = lastUser;
+                loadStats(lastUser);
+            }
+        });
+    </script>
+</body>
+</html>
