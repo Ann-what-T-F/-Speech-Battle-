@@ -390,6 +390,140 @@
             <div class="tagline">Мастерская аргументов — тренируй логику, побеждай в дебатах</div>
         </div>
 
+        <!-- ИНСТРУКЦИЯ КАК ИГРАТЬ -->
+<div class="howto-panel" id="howtoPanel">
+    <div class="howto-header" onclick="toggleHowto()">
+        <i class="fas fa-question-circle"></i> Как играть? <i class="fas fa-chevron-down" id="howtoArrow"></i>
+    </div>
+    <div class="howto-content" id="howtoContent">
+        <div class="howto-grid">
+            <div class="howto-card"><i class="fas fa-comments"></i><h4>Дебаты</h4><p>Выберите тему → Отвечайте ИИ: <strong>«Контраргумент»</strong> (введите свой довод) или <strong>«Согласен»</strong>. Счёт меняется, побеждает тот, у кого больше очков.</p></div>
+            <div class="howto-card"><i class="fas fa-question-circle"></i><h4>Викторины</h4><p>Выберите категорию → Отвечайте на вопросы за ограниченное время. Чем больше правильных ответов, тем выше счёт и награда.</p></div>
+            <div class="howto-card"><i class="fas fa-graduation-cap"></i><h4>Тренировки</h4><p>Изучайте логику и ошибки. После ответа вы увидите объяснение. За успешное выполнение даётся опыт.</p></div>
+            <div class="howto-card"><i class="fas fa-search"></i><h4>Найди ошибку</h4><p>В каждом аргументе спрятана логическая уловка. Выберите правильный тип ошибки и получите объяснение.</p></div>
+            <div class="howto-card"><i class="fas fa-chart-line"></i><h4>Статистика</h4><p>Отслеживайте свои победы, уровень, ранг и количество пройденных викторин. Нажмите «Экспорт», чтобы скопировать данные.</p></div>
+            <div class="howto-card"><i class="fas fa-trophy"></i><h4>Достижения</h4><p>Выполняйте условия (например, проведите 1 дебат) — получайте значки и награды. Прогресс виден на карточках.</p></div>
+            <div class="howto-card"><i class="fas fa-history"></i><h4>История</h4><p>Все ваши дебаты сохраняются: дата, тема, счёт и результат. Можно просмотреть в любое время.</p></div>
+            <div class="howto-card"><i class="fas fa-book"></i><h4>Риторика</h4><p>Библиотека приёмов: анафора, метафора, антитеза и другие. Изучайте, чтобы побеждать в спорах.</p></div>
+            <div class="howto-card"><i class="fas fa-graduation-cap"></i><h4>Экзамен</h4><p>50 вопросов за 30 минут. В конце выдаётся сертификат с результатом. Проверьте свои знания!</p></div>
+            <div class="howto-card"><i class="fas fa-user"></i><h4>Аккаунт</h4><p>Войдите или создайте профиль. Статистика и достижения сохраняются. Ежедневный бонус — +опыт.</p></div>
+            <div class="howto-card"><i class="fas fa-store"></i><h4>Магазин</h4><p>Тратьте аргумонеты (АРГ) на скины аватара и темы оформления. Зарабатывайте валюту в дебатах и викторинах.</p></div>
+            <div class="howto-card"><i class="fas fa-moon"></i><h4>Тёмная тема</h4><p>Нажмите на иконку луны в шапке — интерфейс переключится в ночной режим. Выбор сохранится.</p></div>
+        </div>
+        <p class="howto-tip">💡 <strong>Совет:</strong> Регулярно заходите в игру — каждый день вы получаете бонусный опыт за активность!</p>
+    </div>
+</div>
+
+<style>
+.howto-panel {
+    background: white;
+    border-radius: 20px;
+    margin: 20px 0 30px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: all 0.3s;
+}
+body.dark .howto-panel {
+    background: #1e1a2f;
+    border: 1px solid #2d2a4a;
+}
+.howto-header {
+    padding: 15px 25px;
+    background: linear-gradient(135deg, #10b981, #06b6d4);
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    user-select: none;
+}
+body.dark .howto-header {
+    background: linear-gradient(135deg, #5b21b6, #7e22ce);
+}
+.howto-header i:first-child {
+    font-size: 1.3rem;
+}
+.howto-header i:last-child {
+    margin-left: auto;
+    transition: transform 0.3s;
+}
+.howto-header.collapsed i:last-child {
+    transform: rotate(-90deg);
+}
+.howto-content {
+    padding: 20px;
+    display: block;
+    transition: all 0.3s;
+}
+.howto-content.collapsed {
+    display: none;
+}
+.howto-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 15px;
+    margin-bottom: 20px;
+}
+.howto-card {
+    background: #f8fafc;
+    border-radius: 16px;
+    padding: 15px;
+    transition: all 0.2s;
+}
+body.dark .howto-card {
+    background: #2d2a4a;
+}
+.howto-card i {
+    font-size: 1.8rem;
+    color: #10b981;
+    margin-bottom: 10px;
+    display: inline-block;
+}
+body.dark .howto-card i {
+    color: #c084fc;
+}
+.howto-card h4 {
+    margin-bottom: 8px;
+    color: #059669;
+}
+body.dark .howto-card h4 {
+    color: #c084fc;
+}
+.howto-card p {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.4;
+}
+body.dark .howto-card p {
+    color: #cbd5e1;
+}
+.howto-tip {
+    background: #ecfdf5;
+    padding: 12px 20px;
+    border-radius: 16px;
+    font-size: 0.95rem;
+    color: #065f46;
+    text-align: center;
+}
+body.dark .howto-tip {
+    background: #2d2a4a;
+    color: #c084fc;
+}
+</style>
+
+<script>
+function toggleHowto() {
+    const content = document.getElementById('howtoContent');
+    const header = document.querySelector('.howto-header');
+    content.classList.toggle('collapsed');
+    header.classList.toggle('collapsed');
+}
+// По умолчанию инструкция развёрнута, можно поменять на collapsed
+// Если хотите, чтобы по умолчанию была свёрнута, добавьте класс collapsed к .howto-content и .howto-header
+</script>
+
         <div class="nav">
             <button class="nav-btn active" data-section="topics"><i class="fas fa-comments"></i> Дебаты</button>
             <button class="nav-btn" data-section="quiz"><i class="fas fa-question-circle"></i> Викторины</button>
@@ -603,6 +737,40 @@
             { title: "📜 Парадокс", desc: "Противоречивое утверждение", example: "Чем больше я учусь, тем меньше знаю" },
             { title: "🔄 Оксюморон", desc: "Сочетание несочетаемого", example: "Живой труп, горячий лёд" }
         ];
+        
+    const additionalRhetoric = [
+        { title: "🔊 Аллитерация", desc: "Повтор одинаковых согласных звуков", example: "Гром гремел, грохотал" },
+       { title: "📢 Ассонанс", desc: "Повтор гласных звуков", example: "В лесу родилась ёлочка" },
+     { title: "🏗️ Хиазм", desc: "Крестообразное расположение частей", example: "Есть, чтобы жить, а не жить, чтобы есть" },
+    { title: "📝 Эпитет", desc: "Образное определение", example: "золотые руки, железный характер" },
+    { title: "🎤 Синекдоха", desc: "Замена целого частью", example: "Все флаги в гости будут к нам" },
+    { title: "🖋️ Метонимия", desc: "Замена по смежности", example: "Я три тарелки съел" },
+    { title: "⚡ Парцелляция", desc: "Намеренное разбиение фразы", example: "Он ушёл. Навсегда. В никуда." },
+    { title: "🔄 Инверсия", desc: "Необычный порядок слов", example: "Выхожу один я на дорогу" },
+    { title: "🎯 Риторическое восклицание", desc: "Эмоциональное утверждение", example: "Какая ночь! Какое утро!" },
+    { title: "📣 Апострофа", desc: "Обращение к отсутствующему или абстрактному", example: "О, свобода, как ты прекрасна!" },
+    { title: "🏛️ Сарказм", desc: "Язвительная насмешка", example: "Какой гениальный план!" },
+    { title: "📉 Литота", desc: "Преуменьшение", example: "мужичок с ноготок" },
+    { title: "🎭 Перифраз", desc: "Описательный оборот вместо прямого названия", example: "Северная Пальмира (Санкт-Петербург)" },
+    { title: "🔁 Антифразис", desc: "Употребление слова в противоположном смысле", example: "Ну ты и храбрец! (о трусе)" },
+    { title: "🧩 Эллипсис", desc: "Пропуск подразумеваемого слова", example: "Я — в школу, он — в кино" },
+    { title: "📖 Амплификация", desc: "Нагнетание синонимов", example: "Это чудо, восхищение, восторг!" },
+    { title: "🪄 Каламбур", desc: "Игра слов, основанная на многозначности", example: "Шёл дождь и два студента" },
+    { title: "🗣️ Пролепсис", desc: "Упреждение возражений", example: "Вы скажете, что это дорого, но..." },
+    { title: "🎭 Антикатегория", desc: "Возврат упрёка оппоненту", example: "Сам такой!" },
+    { title: "🧩 Диалогизм", desc: "Имитация диалога внутри монолога", example: "— А что делать? — Надо бороться!" },
+    { title: "🏛️ Эвфемизм", desc: "Смягчение грубого выражения", example: "уйти из жизни (вместо умереть)" },
+    { title: "⚔️ Дисфемизм", desc: "Намеренное огрубление", example: "сдохнуть (вместо умереть)" },
+    { title: "📜 Эпифора (повтор)", desc: "Повтор конца фраз в смежных предложениях", example: "Хочу свободы — свободы для всех. Борюсь за правду — правду для всех." },
+    { title: "🏛️ Хрия", desc: "Краткое риторическое рассуждение", example: "Пословица 'Семь раз отмерь, один раз отрежь' учит нас..." },
+    { title: "🎯 Парадигма", desc: "Пример из истории или мифологии", example: "Как Прометей принёс людям огонь, так и мы..." },
+    { title: "🔁 Рефрен", desc: "Повторяющаяся фраза в речи", example: "Ни шагу назад! Ни шагу назад!" },
+    { title: "🗿 Апофазия", desc: "Упоминание того, о чём обещаешь не говорить", example: "Не буду говорить о его лени, но..." },
+    { title: "📣 Экфрасис", desc: "Словесное описание произведения искусства", example: "Перед нами картина 'Утро в сосновом лесу'..." },
+    { title: "🎭 Ирония судьбы", desc: "Ситуационная ирония", example: "Пожарная станция сгорела" },
+    { title: "📈 Климакс", desc: "Нагнетание (разновидность градации)", example: "Не плакал, не кричал, а выл" }
+];
+
 
         // ========== ДОСТИЖЕНИЯ ==========
         const achievementsList = [
@@ -610,6 +778,24 @@
             { id: "first_win", name: "🏆 Первая победа", desc: "Одержи свою первую победу", requirement: "Выиграй 1 дебат", target: 1, check: (s) => s.wins >= 1, current: (s) => s.wins },
             { id: "debate_master", name: "🎯 Мастер дебатов", desc: "Проведи много дебатов", requirement: "Проведи 10 дебатов", target: 10, check: (s) => s.totalDebates >= 10, current: (s) => s.totalDebates },
             { id: "quiz_lover", name: "📚 Любитель викторин", desc: "Пройди несколько викторин", requirement: "Пройди 5 викторин", target: 5, check: (s) => s.quizzesCompleted >= 5, current: (s) => s.quizzesCompleted }
+        ];
+        // ========== ДОПОЛНИТЕЛЬНЫЕ ДОСТИЖЕНИЯ (15 шт.) ==========
+
+            { id: "win_5", name: "⚡ Первая серия", desc: "Одержи 5 побед в дебатах", requirement: "5 побед", target: 5, check: (s) => s.wins >= 5, current: (s) => s.wins },
+            { id: "win_10", name: "🏅 Опытный оратор", desc: "Одержи 10 побед", requirement: "10 побед", target: 10, check: (s) => s.wins >= 10, current: (s) => s.wins },
+            { id: "win_25", name: "🏆 Мастер слова", desc: "Одержи 25 побед", requirement: "25 побед", target: 25, check: (s) => s.wins >= 25, current: (s) => s.wins },
+            { id: "perfect_quiz", name: "💯 Идеальный ум", desc: "Пройди викторину без ошибок", requirement: "1 идеальная викторина", target: 1, check: (s) => (s.perfectQuizzes || 0) >= 1, current: (s) => s.perfectQuizzes || 0 },
+            { id: "quiz_10", name: "📖 Эрудит", desc: "Пройди 10 викторин", requirement: "10 викторин", target: 10, check: (s) => s.quizzesCompleted >= 10, current: (s) => s.quizzesCompleted },
+            { id: "fast_debate", name: "⚡ Быстрая победа", desc: "Заверши дебаты меньше чем за 2 минуты", requirement: "1 быстрый дебат", target: 1, check: (s) => (s.fastDebates || 0) >= 1, current: (s) => s.fastDebates || 0 },
+            { id: "level_5", name: "🌟 Уровень 5", desc: "Достигни 5 уровня", requirement: "5 уровень", target: 5, check: (s) => s.level >= 5, current: (s) => s.level },
+            { id: "level_10", name: "⭐ Уровень 10", desc: "Достигни 10 уровня", requirement: "10 уровень", target: 10, check: (s) => s.level >= 10, current: (s) => s.level },
+            { id: "train_10", name: "📚 Прилежный ученик", desc: "Пройди 10 тренировок", requirement: "10 тренировок", target: 10, check: (s) => s.trainingCompleted >= 10, current: (s) => s.trainingCompleted },
+            { id: "shop_buy", name: "🛍️ Первая покупка", desc: "Купи предмет в магазине", requirement: "1 покупка", target: 1, check: (s) => (s.ownedItems && s.ownedItems.length >= 1) || false, current: (s) => s.ownedItems ? s.ownedItems.length : 0 },
+            { id: "debate_20", name: "🎙️ Завзятый спорщик", desc: "Проведи 20 дебатов", requirement: "20 дебатов", target: 20, check: (s) => s.totalDebates >= 20, current: (s) => s.totalDebates },
+            { id: "streak_7", name: "🔥 Неудержимый", desc: "Получи ежедневный бонус 7 дней подряд", requirement: "7 дней подряд", target: 7, check: (s) => (s.dailyStreak || 0) >= 7, current: (s) => s.dailyStreak || 0 },
+            { id: "currency_500", name: "💰 Богач", desc: "Накопи 500 аргумонетов", requirement: "500 АРГ", target: 500, check: (s) => s.currency >= 500, current: (s) => s.currency },
+            { id: "exam_pass", name: "🎓 Сертифицированный", desc: "Сдай экзамен (любой результат)", requirement: "1 экзамен", target: 1, check: (s) => (s.examPassed || false) || false, current: (s) => s.examPassed ? 1 : 0 },
+            { id: "all_achievements", name: "👑 Легенда", desc: "Получи все остальные достижения", requirement: "все достижения", target: 20, check: (s) => (s.achievements && s.achievements.length >= 20) || false, current: (s) => s.achievements ? s.achievements.length : 0 }
         ];
 
         // ========== БАЗА ВОПРОСОВ ДЛЯ ЭКЗАМЕНА ==========
